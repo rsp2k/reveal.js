@@ -2979,7 +2979,17 @@
 		var indices = getIndices( slide );
 		var background = getSlideBackground( indices.h, indices.v );
 		if( background ) {
+			
 			background.style.display = 'none';
+			// prevent video/audio from playing when slide isn't showing
+			toArray( background.querySelectorAll( 'video, audio' ) ).forEach( function( el ) {
+				if( !el.hasAttribute( 'data-ignore' ) && typeof el.pause === 'function' ) {
+					el.pause();
+					el.src = "";
+					el.remove();
+				}
+			} );
+			
 		}
 
 	}
